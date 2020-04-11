@@ -21,7 +21,7 @@ type server struct {
 }
 
 type Product struct {
-	Id         int64     `json:"id"`
+	Id         string    `bson:"_id,omitempty" json:"id,omitempty"`
 	Name       string    `json:"name"`
 	Categories []string  `json:"categories"`
 	Added      time.Time `json:"added"`
