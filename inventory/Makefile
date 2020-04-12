@@ -8,4 +8,4 @@ run:
 	go run cmd/server/server.go
 
 seed:
-	go run cmd/seed/seed.go
+	go run cmd/seed/seed.go -file ./seed.json
