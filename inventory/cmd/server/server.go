@@ -10,6 +10,7 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/options"
 	"go.mongodb.org/mongo-driver/mongo/readpref"
 	"net/http"
+	"os"
 	"time"
 )
 
@@ -135,12 +136,13 @@ func (s *server) clearInventory(c *gin.Context) {
 }
 
 func main() {
+	mongoDBcluster := os.Getenv("MONGO_DB_CLUSTER")
 	auth := options.Credential{
 		Username:    "root",
 		Password:    "rootpassword",
 		PasswordSet: true,
 	}
-	client, err := mongo.NewClient(options.Client().SetAuth(auth).ApplyURI("mongodb://localhost:27017"))
+	client, err := mongo.NewClient(options.Client().SetAuth(auth).ApplyURI(mongoDBcluster))
 	if err != nil {
 		panic(err.Error())
 	}
