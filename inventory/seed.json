@@ -1,0 +1,40 @@
+{
+  "items": [
+    {
+      "name": "Blue hat",
+      "categories": ["clothing", "fashion", "blue"]
+    },
+    {
+      "name": "Yellow dress",
+      "categories": ["clothing", "fashion", "yellow"]
+    },
+    {
+      "name": "Socks",
+      "categories": ["clothing"]
+    },
+    {
+      "name": "Apples",
+      "categories": ["food", "vegetable", "green"]
+    },
+    {
+      "name": "Fish pie",
+      "categories": ["food"]
+    },
+    {
+      "name": "Ryzen 3700X",
+      "categories": ["computer"]
+    },
+    {
+      "name": "Keyboard",
+      "categories": ["computer", "blue"]
+    },
+    {
+      "name": "Skateboard",
+      "categories": ["sport", "green"]
+    },
+    {
+      "name": "Bicyle",
+      "categories": ["red", "sports"]
+    }
+  ]
+}
