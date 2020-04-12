@@ -13,6 +13,8 @@ services:
     build: './inventory'
     environment:
       MONGO_DB_CLUSTER: "mongodb://mongo_cluster:27017"
+      MONGO_USER: "root"
+      MONGO_PASSWORD: "rootpassword"
     ports:
       - 8080:8080
 
