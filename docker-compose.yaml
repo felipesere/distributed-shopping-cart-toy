@@ -1,0 +1,42 @@
+version: '3'
+services:
+  nsqlookupd: # this is the lookup service where all dameons needs to register
+    image: nsqio/nsq
+    command: /nsqlookupd
+    ports:
+      - "4160"
+      - "4161"
+      - "31001:4161"
+  nsqd: # this is the actual daemon that represents the queue
+    image: nsqio/nsq
+    command: /nsqd --lookupd-tcp-address=nsqlookupd:4160
+    depends_on:
+      - nsqlookupd
+    ports:
+      - "4150"
+      - "4151:4151"
+  nsqadmin: # this is the GUI to look into it
+      image: nsqio/nsq
+      command: /nsqadmin --lookupd-http-address=nsqlookupd:4161
+      depends_on:
+        - nsqlookupd  
+      ports:
+        - "4171:4171"
+  mongo_cluster:
+    image: mongo:latest
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: rootpassword
+    ports:
+      - 27017:27017
+    volumes:
+      - mongodb_data_container:/data/db
+  inventory:
+    build: './inventory'
+    environment:
+      MONGO_DB_CLUSTER: "mongodb://mongo_cluster:27017"
+    ports:
+      - 8080:8080
+
+volumes:
+  mongodb_data_container:
