@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"github.com/BoRuDar/configuration"
+	remoteClient "github.com/felipesere/inventory/v0/pkg/client"
 	"github.com/felipesere/inventory/v0/pkg/products"
 	"github.com/gin-gonic/gin"
 	"go.mongodb.org/mongo-driver/bson"
@@ -18,6 +19,7 @@ type server struct {
 	client     *mongo.Client
 	database   string
 	collection string
+	remote     remoteClient.RemoteInventory
 }
 
 func with(c *gin.Context) func(error) {
@@ -113,6 +115,13 @@ func (s *server) listInventory(c *gin.Context) {
 		fail(err)
 	}
 
+	available, err := s.remote.Available(category)
+	if err != nil {
+		fmt.Printf("failed to retrieve remote items: %s\n", err.Error())
+	} else {
+		result = append(result, products.OnlyProducts(available)...)
+	}
+
 	c.JSON(http.StatusOK, result)
 }
 
@@ -142,8 +151,9 @@ func main() {
 			User     string `flag:"mongo-user" env:"MONGO_USER"`
 			Password string `flag:"mongo-password" env:"MONGO_PASSWORD"`
 		}
-		Database string `flag:"database" env:"DATABASE" default:"inventory"`
-		Collection string `flag:"collection" en:"COLLECTION" default:"available"`
+		Database   string   `flag:"database" env:"DATABASE" default:"inventory"`
+		Collection string   `flag:"collection" env:"COLLECTION" default:"available"`
+		Peers      []string `flag:"peers" env:"PEERS" default:"[]"`
 	}{}
 
 	configurator, err := configuration.New(
@@ -180,6 +190,7 @@ func main() {
 		client:     client,
 		database:   cfg.Database,
 		collection: cfg.Collection,
+		remote:  remoteClient.New("blarg", cfg.Peers, 2 * time.Second),
 	}
 	r := gin.Default()
 	r.GET("/check", s.check)

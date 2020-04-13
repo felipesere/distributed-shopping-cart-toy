@@ -8,3 +8,23 @@ type Product struct {
 	Categories []string  `json:"categories"`
 	Added      time.Time `json:"added"`
 }
+
+type Metadata struct {
+	ExpiresOn time.Time
+	Peer      string
+}
+
+type RemoteProduct struct {
+	Product Product
+	Meta    Metadata
+}
+
+func OnlyProducts(remotes []RemoteProduct) []Product {
+	var res []Product
+
+	for _, remote := range remotes {
+		res = append(res, remote.Product)
+	}
+
+	return res
+}
