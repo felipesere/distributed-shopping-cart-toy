@@ -143,7 +143,7 @@ func main() {
 			Password string `flag:"mongo-password" env:"MONGO_PASSWORD"`
 		}
 		Database string `flag:"database" env:"DATABASE" default:"inventory"`
-		Collection string `flag:"collection" en:"COLLECTION" defaul:"available"`
+		Collection string `flag:"collection" en:"COLLECTION" default:"available"`
 	}{}
 
 	configurator, err := configuration.New(

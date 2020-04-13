@@ -7,5 +7,8 @@ run:
 	MONGO_PASSWORD="rootpassword" \
 	go run cmd/server/server.go
 
+build-seed:
+	go build cmd/seed/seed.go
+
 seed:
 	go run cmd/seed/seed.go -file ./seed.json
